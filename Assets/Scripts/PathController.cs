@@ -13,9 +13,15 @@ public class PathController : MonoBehaviour
     public float MoveSpeed;
     public float RotateSpeed;
 
+    public Animator animator;
+    bool isWalking;
+
     // Start is called before the first frame update
     void Start()
     {
+        isWalking = false;
+        animator.SetBool("isWalking", isWalking);
+
         thePath = pathManager.GetPath();
         if(thePath != null && thePath.Count > 0)
         {
@@ -48,8 +54,16 @@ public class PathController : MonoBehaviour
 
     void Update()
     {
+        if (Input.anyKeyDown)
+        {
+            isWalking = !isWalking;
+            animator.SetBool("isWalking", isWalking);
+        }
+        if (isWalking)
+        {
         rotateTowardsTarget();
-        moveForward();
+            moveForward();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
